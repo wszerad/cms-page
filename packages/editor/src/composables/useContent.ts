@@ -1,6 +1,6 @@
 import { useMocks } from '@/composables/useMocks'
 import { Content, Version } from '@/types'
-import { ref, computed, shallowReactive } from 'vue'
+import { computed, ref, shallowReactive } from 'vue'
 
 const data = shallowReactive<Map<number, Content>>(new Map())
 const version = ref<number>(1)
@@ -8,9 +8,25 @@ const version = ref<number>(1)
 export const useContent = () => {
 	const { content: contentMock } = useMocks()
 
-	const content = computed<Content>(() => {
-			return data.get(version.value) || Content.create({})
-		})
+	const content = computed<Content | null>({
+		get() {
+			return data.get(version.value) || null
+		},
+		set(content: Content | null) {
+			if (!content) {
+				return
+			}
+
+			console.log(content)
+
+			if (!content.draft) {
+				createNewVersion(content)
+			} else {
+				content.updated = new Date()
+				data.set(version.value, content)
+			}
+		}
+	})
 
 	const versions = computed<Version[]>(() => {
 		return Array.from(data.values())
@@ -18,12 +34,15 @@ export const useContent = () => {
 
 	const createNewVersion = (base: Content) => {
 		const newVersion = Math.max(...versions.value.map(item => item.version), 0) + 1
-		const mockContent = Content.create({
+		const newContent = Content.create({
 			...base,
-			version: newVersion
+			draft: true,
+			version: newVersion,
+			created: new Date(),
+			updated: new Date()
 		})
 
-		data.set(newVersion, mockContent)
+		data.set(newVersion, newContent)
 		version.value = newVersion
 	}
 
@@ -32,18 +51,19 @@ export const useContent = () => {
 
 		content.value.draft = false
 		// TODO try to save
-		createNewVersion(content.value)
 	}
 
 	const load = () => {
 		if (!Array.from(data.keys()).length) {
-			createNewVersion(contentMock)
+			data.set(contentMock.version, contentMock)
+			version.value = contentMock.version
 		}
 	}
 
 	load()
 
 	return {
+		version,
 		versions,
 		content,
 		save

@@ -41,13 +41,13 @@ onUnmounted(
 				selectComponent(component)
 				return
 			} else {
-				selectComponent(null)
+				selectComponent()
 			}
 			return
 		}
 
-		selectPage(null)
-		selectComponent(null)
+		selectPage()
+		selectComponent()
 		return
 	})
 )

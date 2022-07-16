@@ -7,9 +7,10 @@ import Row from '@/components/form/Row.vue'
 import { useComponent } from '@/composables/useComponent'
 import { useMocks } from '@/composables/useMocks'
 import { computed, ref } from 'vue'
+import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
 const { manifest } = useMocks()
-const { component } = useComponent()
+const { component, saveComponent } = useComponent()
 const componentImport = ref('')
 
 const options = Object.keys(manifest).map(key => ({ label: key, value: key }))
@@ -21,6 +22,9 @@ const componentProps = computed(() => {
 const onImport = () => {
 	console.log('import', JSON.parse(componentImport.value))
 }
+
+onBeforeRouteLeave(saveComponent)
+onBeforeRouteUpdate(saveComponent)
 </script>
 
 <template>

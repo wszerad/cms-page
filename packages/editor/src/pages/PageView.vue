@@ -5,27 +5,22 @@ import ComponentsList from '@/components/page/ComponentsList.vue'
 import Group from '@/components/form/Group.vue'
 import Row from '@/components/form/Row.vue'
 import { usePage } from '@/composables/usePage'
-import { Page } from '@/types'
-import { ref, watch } from 'vue'
+import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
-const { page, allPages } = usePage()
+const { page, savePage } = usePage()
 
-const form = ref(Page.create(page.value || allPages.value[0]))
-
-watch(page, (now) => {
-	if (!now) return
-	form.value = Page.create(now)
-})
+onBeforeRouteLeave(savePage)
+onBeforeRouteUpdate(savePage)
 </script>
 
 <template>
 	<div class="PageView" v-if="page">
 		<Group title="Page">
 			<Row label="Title">
-				<Text v-model="form.title" />
+				<Text v-model="page.title" />
 			</Row>
 			<Row label="Path">
-				<Url v-model="form.path" />
+				<Url v-model="page.path" />
 			</Row>
 		</Group>
 		<Group title="Components">

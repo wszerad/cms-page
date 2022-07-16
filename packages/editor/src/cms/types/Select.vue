@@ -2,7 +2,7 @@
 import { computed, defineProps } from 'vue'
 
 const props = defineProps<{
-	modelValue: string,
+	modelValue: any,
 	options: { label: string, value: any}[]
 }>()
 const emit = defineEmits<{

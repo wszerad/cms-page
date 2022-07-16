@@ -18,6 +18,7 @@ export const useMocks = () => {
 	}
 
 	const content: Content = Content.create({
+		draft: false,
 		pages: [
 			Page.create({
 				title: 'Home',

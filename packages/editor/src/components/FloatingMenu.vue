@@ -1,12 +1,19 @@
 <script setup lang="ts">
+import Select from '@/cms/types/Select.vue'
 import Button from '@/components/Button.vue'
 import Icon from '@/components/Icon.vue'
+import { useContent } from '@/composables/useContent'
 import { useMenu } from '@/composables/useMenu'
 import { usePage } from '@/composables/usePage'
+import { computed } from 'vue'
 
 const { savePage } = usePage()
-
+const { versions, version } = useContent()
 const { toggle } = useMenu()
+
+const options = computed(() => {
+	return versions.value.map(item => ({ label: `${item.version}`, value: item.version }))
+})
 </script>
 
 <template>
@@ -19,6 +26,12 @@ const { toggle } = useMenu()
 				name="menu"
 			/>
 		</Button>
+		<div>
+			<Select
+				v-model="version"
+				:options="options"
+			/>
+		</div>
 		<Button
 			@click="savePage"
 		>
