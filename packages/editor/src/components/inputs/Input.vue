@@ -2,9 +2,9 @@
 import Row from '@/components/form/Row.vue'
 import { SomeJSONSchema } from 'ajv/lib/types/json-schema'
 import { computed, defineProps } from 'vue'
-import Text from '@/cms/types/Text.vue'
-import Number from '@/cms/types/Number.vue'
-import Bool from '@/cms/types/Bool.vue'
+import Text from '@/components/inputs/Text.vue'
+import Number from '@/components/inputs/Number.vue'
+import Bool from '@/components/inputs/Bool.vue'
 
 const props = defineProps<{
 	schema: SomeJSONSchema,

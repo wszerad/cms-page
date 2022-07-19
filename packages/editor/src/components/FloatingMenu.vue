@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Select from '@/cms/types/Select.vue'
+import Select from '@/components/inputs/Select.vue'
 import Button from '@/components/Button.vue'
 import Icon from '@/components/Icon.vue'
 import { useContent } from '@/composables/useContent'

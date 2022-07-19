@@ -1,0 +1,12 @@
+{
+	"version": 1,
+	"draft": false,
+	"updated": 0,
+	"created": 0,
+	"id": 0,
+	"pages": [
+		"home",
+		"blog",
+		"blogpost"
+	]
+}

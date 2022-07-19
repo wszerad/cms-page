@@ -8,10 +8,10 @@ const config: UserConfig = {
     Vue(),
 		WindiCSS(),
   ],
-  ssgOptions: {
-    script: 'async',
-    formatting: 'prettify',
-  },
+  // ssgOptions: {
+  //   script: 'async',
+  //   formatting: 'prettify',
+  // },
 	resolve: {
 		alias: [
 			{
@@ -20,6 +20,14 @@ const config: UserConfig = {
 			}
 		],
 	},
+	server: {
+		proxy: {
+			'/api': {
+				target: 'http://127.0.0.1:3001',
+				rewrite: (path) => path.replace(/^\/api/, '')
+			}
+		}
+	}
 }
 
 export default config

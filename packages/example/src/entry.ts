@@ -1,50 +1,100 @@
-import { useComponent } from '@cms/editor/src/composables/useComponent'
-import { useNavigation } from '@cms/editor/src/composables/useNavigation'
-import { usePage } from '@cms/editor/src/composables/usePage'
-import { PagesTreeItem } from '@cms/editor/src/types'
 import { ViteSSG } from 'vite-ssg'
-import App from '@/App.vue'
-import { Page } from '@/types'
-import manifest from '@/manifest'
+import App from './App.vue'
+import Some from './Some.vue'
 import 'virtual:windi.css'
-import '@/assets/styles.scss'
+import {
+	Page,
+	Content,
+	Part,
+	schema,
+	PageRender,
+	resolveContent
+} from '@cms/editor'
 
 export const createApp = ViteSSG(App, {
 	routes: [
 		{
 			name: 'home',
 			path: '',
-			component: () => import('@/pages/index.vue')
+			component: Some
 		},
 		{
 			name: 'page',
 			path: '/:page',
-			component: () => import('@/pages/index.vue'),
+			component: PageRender
 		},
 		{
 			name: 'subpage',
 			path: '/:page/:subpage',
-			component: () => import('@/pages/index.vue'),
-		},
+			component: PageRender
+		}
 	]
 })
 
-function nestedPages(list: string[], pages?: Record<string, Page>) {
-	if (!pages) {
-		return list
-	}
+const content: Content = Content.create({
+	draft: false,
+	pages: [
+		Page.create({
+			title: 'Home',
+			path: '',
+			parts: [
+				Part.create({
+					component: 'Header',
+					props: {
+						title: 'Header 1'
+					}
+				}),
+				Part.create({
+					component: 'Image',
+					props: {
+						src: 'https://picsum.photos/200'
+					}
+				}),
+				Part.create({
+					component: 'Image',
+					props: {
+						src: 'https://picsum.photos/seed/picsum/200/300'
+					}
+				}),
+				Part.create({
+					component: 'Header',
+					props: {
+						title: 'ending'
+					}
+				})
+			]
+		}),
+		Page.create({
+			title: 'Blog',
+			path: 'blog',
+			pages: [
+				Page.create({
+					title: 'Blogpost',
+					path: ':id'
+				})
+			]
+		}),
+		Page.create({
+			title: 'About',
+			path: 'about',
+			pages: [
+				Page.create({
+					title: 'Contact',
+					path: 'contact'
+				}),
+				Page.create({
+					title: 'Map',
+					path: 'map'
+				}),
+			]
+		}),
+		Page.create({
+			title: 'Single',
+			path: 'single'
+		}),
+	]
+})
 
-	Object
-		.entries(pages)
-		.forEach(([path, page]) => {
-			list.push(path)
-			nestedPages(list, page.pages)
-		})
-}
-
-export async function includedRoutes() {
-	const routes: string[] = []
-	routes.push('')
-	nestedPages(routes, manifest.pages)
-	return routes
+export function includedRoutes() {
+	return resolveContent(content)
 }

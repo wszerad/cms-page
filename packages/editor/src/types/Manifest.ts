@@ -1,5 +1,7 @@
 import { PropertiesSchema } from 'ajv/lib/types/json-schema'
-import { Component } from 'vue'
+import { Component, InjectionKey } from 'vue'
+
+export const ManifestKey = Symbol.for('manifest') as InjectionKey<ComponentManifest>
 
 export interface ComponentManifest {
 	component: Component

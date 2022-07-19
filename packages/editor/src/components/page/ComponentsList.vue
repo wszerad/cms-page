@@ -30,17 +30,17 @@ const onAddComponent = () => {
 
 <template>
 	<div class="ComponentsList">
-		<DragList
-			v-model="parts"
-		>
-			<template v-slot="item">
-				<RouterLink
-					:to="componentLink(item)"
-				>
-					{{ item.component }}
-				</RouterLink>
-			</template>
-		</DragList>
+<!--		<DragList-->
+<!--			v-model="parts"-->
+<!--		>-->
+<!--			<template v-slot="item">-->
+<!--				<RouterLink-->
+<!--					:to="componentLink(item)"-->
+<!--				>-->
+<!--					{{ item.component }}-->
+<!--				</RouterLink>-->
+<!--			</template>-->
+<!--		</DragList>-->
 		<Button @click="onAddComponent">
 			<Icon name="add" />
 			Add Component

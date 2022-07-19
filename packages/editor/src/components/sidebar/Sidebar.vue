@@ -8,9 +8,9 @@ const { visible } = useMenu()
 <template>
 	<aside class="Sidebar">
 		<div class="Sidebar_content">
-			<PagesSidebar
-				v-show="visible"
-			/>
+<!--			<PagesSidebar-->
+<!--				v-show="visible"-->
+<!--			/>-->
 		</div>
 	</aside>
 </template>

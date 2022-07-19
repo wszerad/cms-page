@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Text from '@/cms/types/Text.vue'
-import Url from '@/cms/types/Url.vue'
+import Text from '@/components/inputs/Text.vue'
+import Url from '@/components/inputs/Url.vue'
 import ComponentsList from '@/components/page/ComponentsList.vue'
 import Group from '@/components/form/Group.vue'
 import Row from '@/components/form/Row.vue'

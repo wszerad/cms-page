@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Draggable from "vuedraggable";
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
 	modelValue: any[]

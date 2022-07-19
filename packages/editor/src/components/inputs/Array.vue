@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Input from '@/cms/types/Input.vue'
+import Input from '@/components/inputs/Input.vue'
 import { SomeJSONSchema } from 'ajv/lib/types/json-schema'
 import { computed, defineProps } from 'vue'
 

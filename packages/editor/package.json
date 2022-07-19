@@ -1,13 +1,26 @@
 {
   "name": "@cms/editor",
 	"version": "0.0.0",
-  "scripts": {
+	"type": "module",
+	"files": ["dist"],
+	"main": "./dist/cms-editor.umd.cjs",
+	"module": "./dist/cms-editor.es.js",
+	"types": "./dist/types/index.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/cms-editor.es.js",
+			"require": "./dist/cms-editor.umd.cjs"
+		}
+	},
+	"scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
   },
+	"peerDependencies": {
+		"vue": "^3.2.37"
+	},
   "dependencies": {
-    "vue": "^3.2.37",
 		"vuedraggable": "^4.1.0",
 		"@vueuse/core": "^8.7.5",
 		"ajv": "^8.11.0",
@@ -15,6 +28,8 @@
 		"vue-router": "^4.1.2"
 	},
   "devDependencies": {
+		"vue": "^3.2.37",
+		"vue-tsc": "^0.38.8",
     "@vitejs/plugin-vue": "^2.3.3",
     "typescript": "^4.7.3",
     "vite": "^2.9.12",

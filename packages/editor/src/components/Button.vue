@@ -2,7 +2,7 @@
 import { defineProps } from 'vue'
 
 defineProps<{
-	type?: string,
+	type?: 'button' | 'reset' | 'submit',
 	pending?: boolean
 }>()
 

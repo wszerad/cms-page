@@ -86,7 +86,7 @@ const mergePages = (tree: PageTree[]) => {
 	return rootPages
 }
 
-const contentClone = computed(() => Content.create(content.value))
+const contentClone = computed(() => Content.create(content.value || {}))
 
 const pages = computed<PageTree[]>({
 	get() {
@@ -94,7 +94,7 @@ const pages = computed<PageTree[]>({
 	},
 	set(pageTree: PageTree[]) {
 		content.value = {
-			...content.value,
+			...(content.value || {}),
 			pages: mergePages(pageTree)
 		}
 	}
