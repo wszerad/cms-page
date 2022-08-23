@@ -1,0 +1,49 @@
+{
+	"version": 1,
+	"draft": false,
+	"updated": 0,
+	"created": 0,
+	"id": 0,
+	"pages": [
+		{
+			"version": 1,
+			"draft": false,
+			"updated": 0,
+			"created": 0,
+			"id": 0,
+			"parts": [],
+			"title": "home",
+			"path": "/"
+		},
+		{
+			"version": 1,
+			"draft": false,
+			"updated": 0,
+			"created": 0,
+			"id": 0,
+			"parts": [
+				{
+					"id": "0",
+					"component": "Header",
+					"props": {
+						"title": "Tytul"
+					}
+				}
+			],
+			"pages": [
+				{
+					"version": 1,
+					"draft": false,
+					"updated": 0,
+					"created": 0,
+					"id": 0,
+					"parts": [],
+					"title": "topic",
+					"path": "/topic"
+				}
+			],
+			"title": "blog",
+			"path": "/blog"
+		}
+	]
+}

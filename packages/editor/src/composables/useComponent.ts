@@ -1,51 +1,68 @@
-import { useContent } from '@/composables/useContent'
 import { usePage } from '@/composables/usePage'
 import { Part } from '@/types'
+import { ListItemLocation, ListManager } from '@/utils/ListManager'
 import { computed, ref } from 'vue'
 
 const component = ref<Part>()
-const originalRef = ref<Part>()
+let onSave = () => {}
 
 export const useComponent = () => {
-	const { page } = usePage()
-	const { content } = useContent()
+	const { page, updatePage } = usePage()
 	const allComponents = computed(() => page.value?.parts || [])
 
-	const saveComponent = () => {
-		const ctx = content.value
+	const saveComponent = () => onSave()
 
-		if (!ctx || !component.value || JSON.stringify(originalRef.value === component.value)) {
+	const updateComponents = (components: Part[]) => {
+		if (!page.value) {
 			return
 		}
 
-		content.value = {
-			...ctx,
-			pages: ctx.pages.map(item => {
-				if (page.value!.id !== item.id) {
-					return item
-				}
-
-				return {
-					...item,
-					parts: item.parts.map(item => {
-						if (item.id !== component.value!.id) {
-							return item
-						}
-
-						return component.value!
-					})
-				}
-			})
-		}
+		updatePage({
+			...page.value,
+			parts: components
+		})
 	}
 
 	const selectComponent = (selectedComponent?: Part) => {
-		originalRef.value = selectedComponent
-		component.value = selectedComponent ? Part.create(selectedComponent) : undefined
+		if (!selectedComponent) {
+			component.value = undefined
+			onSave = () => {}
+			return
+		}
+
+		const modifiedComponent = component.value = Part.create(selectedComponent)
+		onSave = () => {
+			const parts = new ListManager(allComponents.value).replace(modifiedComponent!)
+			updateComponents(parts)
+		}
+	}
+
+	const addComponent = (location: { pre?: string, post?: string }) => {
+		const newComponent = component.value = Part.create({
+			component: '',
+		})
+
+		onSave = () => {
+			const parts = new ListManager(allComponents.value).move(newComponent, location)
+			updateComponents(parts)
+		}
+	}
+
+	const removerComponent = (component: Part) => {
+		const parts = new ListManager(allComponents.value).remove(component)
+		updateComponents(parts)
+	}
+
+	const moveComponent = (component: Part, location: ListItemLocation) => {
+		const parts = new ListManager(allComponents.value).move(component, location)
+		updateComponents(parts)
 	}
 
 	return {
+		addComponent,
 		saveComponent,
+		removerComponent,
+		moveComponent,
 		selectComponent,
 		allComponents,
 		component

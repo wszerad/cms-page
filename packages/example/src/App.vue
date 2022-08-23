@@ -1,6 +1,12 @@
+<script setup lang="ts">
+import { PageRender } from '@cms/editor'
+</script>
+
 <template>
   <main>
-    <RouterView />
+    <RouterView v-slot="{ Component, route }">
+			<PageRender :page="route" />
+		</RouterView>
   </main>
 </template>
 

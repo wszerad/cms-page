@@ -17,62 +17,67 @@ export const useMocks = () => {
 		})
 	}
 
+	const home = Page.create({
+		title: 'Home',
+		path: '',
+		parts: [
+			Part.create({
+				component: 'Header',
+				props: {
+					title: 'Header 1'
+				}
+			}),
+			Part.create({
+				component: 'Image',
+				props: {
+					src: 'https://picsum.photos/200'
+				}
+			}),
+			Part.create({
+				component: 'Image',
+				props: {
+					src: 'https://picsum.photos/seed/picsum/200/300'
+				}
+			}),
+			Part.create({
+				component: 'Header',
+				props: {
+					title: 'ending'
+				}
+			})
+		]
+	})
+
+	const blog = Page.create({
+		title: 'Blog',
+		path: 'blog',
+	})
+
+	const about = Page.create({
+		title: 'About',
+		path: 'about'
+	})
+
 	const content: Content = Content.create({
 		draft: false,
 		pages: [
+			home,
+			blog,
 			Page.create({
-				title: 'Home',
-				path: '',
-				parts: [
-					Part.create({
-						component: 'Header',
-						props: {
-							title: 'Header 1'
-						}
-					}),
-					Part.create({
-						component: 'Image',
-						props: {
-							src: 'https://picsum.photos/200'
-						}
-					}),
-					Part.create({
-						component: 'Image',
-						props: {
-							src: 'https://picsum.photos/seed/picsum/200/300'
-						}
-					}),
-					Part.create({
-						component: 'Header',
-						props: {
-							title: 'ending'
-						}
-					})
-				]
+				parent: blog.id,
+				title: 'Blogpost',
+				path: ':id'
+			}),
+			about,
+			Page.create({
+				parent: about.id,
+				title: 'Contact',
+				path: 'contact'
 			}),
 			Page.create({
-				title: 'Blog',
-				path: 'blog',
-				pages: [
-					Page.create({
-						title: 'Blogpost',
-						path: ':id'
-					})
-				]
-			}),
-			Page.create({
-				title: 'About',
-				path: 'about',
-				pages: [
-					Page.create({
-						title: 'Contact',
-						path: 'contact'
-					}),
-					Page.create({
-						title: 'Map',
-						path: 'map'
-					}),
-				]
+				parent: about.id,
+				title: 'Map',
+				path: 'map'
 			}),
 			Page.create({
 				title: 'Single',

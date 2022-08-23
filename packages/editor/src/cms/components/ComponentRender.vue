@@ -17,8 +17,4 @@ defineProps<{
 		:is="manifest[component].component"
 		v-bind="props"
 	/>
-<!--    <template v-for="(slot, key) in slots" v-slot:[key]>-->
-<!--      <Render v-bind="slot"/>-->
-<!--    </template>-->
-<!--  </component>-->
 </template>

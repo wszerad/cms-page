@@ -8,10 +8,10 @@ const config: UserConfig = {
     Vue(),
 		WindiCSS(),
   ],
-  // ssgOptions: {
-  //   script: 'async',
-  //   formatting: 'prettify',
-  // },
+  ssgOptions: {
+    script: 'async',
+    formatting: 'prettify',
+  },
 	resolve: {
 		alias: [
 			{

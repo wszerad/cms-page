@@ -1,15 +1,18 @@
 import { Content, Page } from '@/types'
 
-function nestedPages(pages?: Page[], parent: string[] = []): string[] {
+function nestedPages(pages?: Page[], parents: Page[] = []): string[] {
 	if (!pages) {
 		return []
 	}
 
+	const parent = parents.at(-1)
+
 	return pages
+		.filter(page => page.parent == parent?.id)
 		.flatMap((item) => {
 			return [
-				[...parent, item.path].join('/'),
-				...nestedPages(item.pages, [...parent, item.path])
+				[...parents, item].map(i => i.path).join(''),
+				...nestedPages(pages, [...parents, item])
 			]
 		})
 }

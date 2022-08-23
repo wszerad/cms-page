@@ -12,7 +12,7 @@ const config: UserConfig = {
 			fileName: 'cms-editor'
 		},
 		rollupOptions: {
-			external: ['vue'],
+			external: ['vue', 'vue-router'],
 			output: {
 				globals: {
 					vue: 'Vue'

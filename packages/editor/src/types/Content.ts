@@ -9,8 +9,8 @@ export class Version {
 
 export class Page extends Version {
 	id: string = `${Date.now()}${i++}`
+	parent: string | null = null
 	parts: Part[] = []
-	pages: Page[] = []
 	title!: string
 	path!: string
 
@@ -19,17 +19,10 @@ export class Page extends Version {
 			new Page(),
 			{
 				...data,
-				parts: (data.parts || []).map(Part.create),
-				pages: (data.pages || []).map(Page.create),
+				parts: (data.parts || []).map(Part.create)
 			}
 		)
 	}
-}
-
-export interface PagesTreeItem {
-	id: string
-	page: Page
-	ancestors: Page[]
 }
 
 export class Part {

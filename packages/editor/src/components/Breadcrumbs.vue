@@ -5,23 +5,12 @@ import { useNavigation } from '@/composables/useNavigation'
 import { usePage } from '@/composables/usePage'
 import { Page, Part } from '@/types'
 import { computed } from 'vue'
-const { allPagesFlat, page } = usePage()
+const { page } = usePage()
 const { component } = useComponent()
-const { homeLink, componentLink, pageLink } = useNavigation()
+const { homeLink, pageLink } = useNavigation()
 
 const crumbs = computed(() => {
-	if (!page) return []
-
-	const ancestors = allPagesFlat.value
-		.find(item => item.id === page.value?.id)
-		?.ancestors || []
-
-	return [
-		{},
-		...ancestors,
-		page.value,
-		component.value
-	].filter(item => !!item)
+	return []
 })
 
 const getName = (el: Page | Part | unknown) => {
@@ -38,9 +27,7 @@ const getLink = (el: Page | Part | unknown) => {
 	if (el instanceof Page) {
 		return pageLink(el)
 	}
-	if (el instanceof Part) {
-		return componentLink(el)
-	}
+
 	return homeLink()
 }
 

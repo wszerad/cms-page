@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import Breadcrumbs from '@/components/Breadcrumbs.vue'
 import FloatingMenu from '@/components/FloatingMenu.vue'
+import Modal from '@/components/modals/Modal.vue'
 import Sidebar from '@/components/sidebar/Sidebar.vue'
 import { useComponent } from '@/composables/useComponent'
 import { useMenu } from '@/composables/useMenu'
 import { useNavigation } from '@/composables/useNavigation'
 import { usePage } from '@/composables/usePage'
 import { router } from '@/routing'
+import { Manifest, ManifestKey } from '@/types'
 import { useBreakpoints } from '@vueuse/core'
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, provide } from 'vue'
+
+const props = defineProps<{ manifest: Manifest }>()
+
+provide(ManifestKey, props.manifest)
 
 const { open } = useMenu()
 const { homeLink, pageLink } = useNavigation()
@@ -69,5 +75,6 @@ onMounted(() => {
 				<RouterView />
 			</article>
 		</div>
+		<Modal />
 	</main>
 </template>

@@ -1,87 +1,98 @@
 import { useContent } from '@/composables/useContent'
-import { Page, PagesTreeItem } from '@/types'
+import { Page } from '@/types'
+import { ListItemLocation, ListManager } from '@/utils/ListManager'
 import { computed, ref } from 'vue'
 
 const page = ref<Page>()
-let originalRef = ref<Page>()
+let onSave = () => {}
 
 export const usePage = () => {
 	const { content } = useContent()
 
 	const allPages = computed(() => content.value?.pages || [])
 
-	const flatPage = (page: Page, ancestors: Page[] = []): PagesTreeItem[] => {
-		return [
-			{
-				id: page.id,
-				page,
-				ancestors
-			},
-			...page.pages.flatMap(item => flatPage(item, [...ancestors, page]))
-		]
-	}
-
-	const allPagesFlat = computed<PagesTreeItem[]>(() => {
-		return allPages.value.flatMap(item => flatPage(item))
-	})
-
-	const selectPage = (selectedPage?: Page) => {
-		originalRef.value = selectedPage
-		page.value = selectedPage
-			? Page.create(selectedPage)
-			: undefined
-	}
-
-	const savePage = () => {
+	const updatePage = (page: Page) => {
 		const ctx = content.value
 
-		if (!ctx || !page.value || JSON.stringify(originalRef.value) === JSON.stringify(page.value)) {
-			return
-		}
+		if (!ctx) return
 
-		content.value = {
-			...ctx,
-			pages: ctx.pages.map(item => {
-				if (page.value!.id !== item.id) {
+		updatePages(
+			ctx.pages.map(item => {
+				if (item.id !== page.id) {
 					return item
 				}
 
-				return {
-					...page.value!,
-					updated: new Date(),
-					version: page.value!.version + 1
-				}
+				return page
 			})
-		}
+		)
 	}
 
-	const addPage = () => {
+	const updatePages = (pages: Page[]) => {
 		const ctx = content.value
-		const page = Page.create({
-			title: 'New page',
-			path: 'page',
-		})
-		selectPage(page)
 
-		if (!ctx) {
-			return
-		}
+		if (!ctx) return
 
 		content.value = {
 			...ctx,
-			pages: [
-				...ctx.pages,
-				page
-			]
+			pages
 		}
 	}
 
+	const removePage = (el: Page) => {
+		const pages = new ListManager(allPages.value).remove(el)
+		updatePages(pages)
+	}
+
+	const movePage = (el: Page, location: ListItemLocation) => {
+		const pages = new ListManager(allPages.value).move(el, location)
+		updatePages(pages)
+	}
+
+	const selectPage = (selectedPage?: Page) => {
+		if (!selectedPage) {
+			onSave = () => {}
+			return
+		}
+
+		const modifiedPage = page.value = Page.create(selectedPage)
+		onSave = () => {
+			const pages = new ListManager(allPages.value).replace({
+				...modifiedPage,
+				updated: new Date(),
+				version: page.value!.version + 1
+			})
+			updatePages(pages)
+		}
+	}
+
+	const addPage = (parent: string | null, location: ListItemLocation) => {
+		const newPage = Page.create({
+			title: 'New page',
+			path: 'page',
+			parent: parent
+		})
+
+		onSave = () => {
+			const pages = new ListManager(allPages.value).move({
+				...newPage,
+				updated: new Date()
+			}, location)
+			updatePages(pages)
+		}
+
+		page.value = newPage
+	}
+
+	const savePage = () => onSave()
+
 	return {
 		allPages,
-		allPagesFlat,
 		page,
+		updatePage,
 		selectPage,
 		savePage,
-		addPage
+		addPage,
+		movePage,
+		removePage
 	}
 }
